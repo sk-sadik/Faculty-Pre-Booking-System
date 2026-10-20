@@ -1,0 +1,152 @@
+rules_version = '2';
+// Faculty Pre-Booking System — role-based access.
+//
+// Roles live on users/{uid}.role: "student" | "faculty" | "admin".
+//   students: read faculty profiles + availability, create/cancel only their
+//             own appointments, answer reschedule proposals on their own docs.
+//   faculty:  manage their own availability/blockedDates, act on appointments
+//             addressed to them, edit only their own profile.
+//   users:    edit only their own profile (role is immutable for non-admins).
+//   admin:    full access.
+//   notifications: readable/updatable only by the owner; any signed-in client
+//             may create them (repos write them for the other party).
+
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function requesterDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return signedIn()
+          && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+          && requesterDoc().role == 'admin';
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // ---- users ----
+    match /users/{uid} {
+      // Any signed-in user can browse the directory (students need faculty
+      // profiles, faculty need student names on requests).
+      allow read: if signedIn();
+      // Self-registration: new users create their own doc as student/faculty.
+      // Admin promotion requires an existing admin.
+      allow create: if isOwner(uid)
+          && request.resource.data.role in ['student', 'faculty', 'admin']
+          && (request.resource.data.role in ['student', 'faculty'] || isAdmin());
+      // Owners edit their profile but can never change their own role.
+      allow update: if isAdmin()
+          || (isOwner(uid)
+              && request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin();
+    }
+
+    // ---- availability (faculty weekly / one-off slots) ----
+    match /availability/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+          && request.resource.data.facultyId == request.auth.uid
+          || isAdmin();
+      allow update, delete: if isAdmin()
+          || (signedIn()
+              && resource.data.facultyId == request.auth.uid
+              && request.resource.data.facultyId == request.auth.uid);
+    }
+
+    // ---- blockedDates (faculty leave / conference) ----
+    match /blockedDates/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+          && request.resource.data.facultyId == request.auth.uid
+          || isAdmin();
+      allow update, delete: if isAdmin()
+          || (signedIn()
+              && resource.data.facultyId == request.auth.uid
+              && request.resource.data.facultyId == request.auth.uid);
+    }
+
+    // ---- appointments ----
+    function validTransition(oldStatus, newStatus) {
+      return (oldStatus == 'pending'
+              && newStatus in ['approved', 'rejected', 'cancelled'])
+          || (oldStatus == 'approved'
+              && newStatus in ['rescheduled', 'completed', 'cancelled', 'no_show'])
+          || (oldStatus == 'rescheduled'
+              && newStatus in ['approved', 'cancelled']);
+    }
+
+    // Student-side allowed moves (subset of the graph).
+    function studentMove(oldStatus, newStatus) {
+      return (oldStatus == 'pending' && newStatus == 'cancelled')
+          || (oldStatus == 'approved' && newStatus == 'cancelled')
+          || (oldStatus == 'rescheduled'
+              && newStatus in ['approved', 'cancelled']);
+    }
+
+    match /appointments/{id} {
+      allow read: if signedIn()
+          && (resource.data.studentId == request.auth.uid
+              || resource.data.facultyId == request.auth.uid)
+          || isAdmin();
+      // Students open requests for themselves; status must start pending.
+      allow create: if signedIn()
+          && request.resource.data.studentId == request.auth.uid
+          && request.resource.data.status == 'pending'
+          && request.resource.data.keys().hasAll(
+              ['studentId', 'facultyId', 'date', 'startTime', 'endTime', 'purpose'])
+          || isAdmin();
+      // Faculty act on their inbox, students on their own docs (cancel /
+      // answer proposal), admin on everything.
+      allow update: if isAdmin()
+          || (signedIn()
+              && resource.data.facultyId == request.auth.uid
+              && validTransition(resource.data.status, request.resource.data.status))
+          || (signedIn()
+              && resource.data.studentId == request.auth.uid
+              && validTransition(resource.data.status, request.resource.data.status)
+              && studentMove(resource.data.status, request.resource.data.status));
+      allow delete: if isAdmin();
+    }
+
+    // ---- slotLocks (internal booking mutex docs) ----
+    // Created atomically in the booking transaction, removed when the
+    // appointment leaves the blocking set. No client-readable meaning.
+    match /slotLocks/{id} {
+      allow read, create, delete: if signedIn();
+      allow update: if false;
+    }
+
+    // ---- departments (admin-managed catalog) ----
+    match /departments/{id} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---- seed_meta (one-shot seed marker) ----
+    match /seed_meta/{id} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ---- notifications ----
+    match /notifications/{id} {
+      allow read, update: if signedIn()
+          && resource.data.userId == request.auth.uid
+          || isAdmin();
+      // Repos write notifications for the other party inside transactions.
+      allow create: if signedIn()
+          && request.resource.data.keys().hasAll(['userId', 'title', 'body']);
+      allow delete: if signedIn()
+          && resource.data.userId == request.auth.uid
+          || isAdmin();
+    }
+  }
+}

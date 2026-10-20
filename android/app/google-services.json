@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "710932583158",
+    "project_id": "pre-book-window",
+    "storage_bucket": "pre-book-window.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710932583158:android:bd9b49a9dc741d318892d7",
+        "android_client_info": {
+          "package_name": "com.faculty.prebooking.faculty_pre_booking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710932583158-2b2ct4h1ukan1i8iktslntnr2mmsm2pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLTJnspeCcAWI-PtnYChHq-Zr_OjK1Hz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710932583158-2b2ct4h1ukan1i8iktslntnr2mmsm2pc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,40 @@
+name: faculty_pre_booking
+description: "Faculty Pre-Booking System - students book faculty appointments in advance."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_riverpod: ^2.5.1
+
+  # Navigation
+  go_router: ^14.7.0
+
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+  firebase_messaging: ^15.1.5
+
+  # Utilities (needed now + later phases)
+  shared_preferences: ^2.3.2
+  intl: ^0.19.0
+  table_calendar: ^3.1.2
+  flutter_local_notifications: ^18.0.1
+  uuid: ^4.3.3
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
