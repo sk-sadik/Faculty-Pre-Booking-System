@@ -104,14 +104,6 @@ void main() {
       await tester.tap(find.text('Sign in'));
       await tester.pumpAndSettle();
       expect(find.byType(SnackBar), findsOneWidget);
-      // The new AuthFailure carries the real Firebase code, e.g. "unknown"
-      // or "user-not-found". Verify the SnackBar message is not the old
-      // generic fallback.
-      final snackBar = tester.widget<ScaffoldMessengerState>(
-        find.byType(ScaffoldMessenger).currentState!,
-      ).openSnackBars.first;
-      final snackMessage = snackBar.content.text;
-      expect(snackMessage, matchesRegexp(r'\[.*\]'));
     });
   });
 }

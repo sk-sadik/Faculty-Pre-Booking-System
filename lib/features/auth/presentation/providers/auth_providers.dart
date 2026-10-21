@@ -42,6 +42,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
           .signIn(email: email, password: password);
       state = AsyncValue.data(user);
       _ref.invalidate(authStateProvider);
+      _ref.invalidate(currentProfileProvider);
       return user;
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -77,6 +78,7 @@ class AuthController extends StateNotifier<AsyncValue<AppUser?>> {
   Future<void> signOut() async {
     await _ref.read(authRepositoryProvider).signOut();
     _ref.invalidate(authStateProvider);
+    _ref.invalidate(currentProfileProvider);
     state = const AsyncValue.data(null);
   }
 }
