@@ -7,6 +7,9 @@ go_router, Firebase (Auth + Firestore + Messaging).
 
 > Status: **all phases complete** (A–F).
 
+🛠 **Error code mapping** – Auth failures now surface Firebase error codes
+(e.g. `operation-not-allowed`, `permission-denied`) instead of generic messages.
+
 ## Tech stack
 
 - Flutter 3.44 / Dart 3.12, Material 3 (light + dark, deep blue + teal)
