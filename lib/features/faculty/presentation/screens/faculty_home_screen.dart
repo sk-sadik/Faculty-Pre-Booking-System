@@ -85,8 +85,7 @@ class _Header extends StatelessWidget {
     return profile.when(
       loading: () => const ListTile(
           title: Text('Welcome'), subtitle: Text('Loading profile…')),
-      error: (_, __) =>
-          const ListTile(title: Text('Welcome back')),
+      error: (_, _) => const ListTile(title: Text('Welcome back')),
       data: (user) => ListTile(
         leading: CircleAvatar(
           backgroundImage:

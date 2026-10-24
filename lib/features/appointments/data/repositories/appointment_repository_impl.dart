@@ -210,8 +210,8 @@ class AppointmentRepositoryImpl implements AppointmentRepository {
       }
       tx.update(ref, {
         'status': to.value,
-        if (rejectionReason != null) 'rejectionReason': rejectionReason,
-        if (extra != null) ...extra,
+        'rejectionReason': ?rejectionReason,
+        ...?extra,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 

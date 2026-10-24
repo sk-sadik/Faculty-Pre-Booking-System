@@ -110,23 +110,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: RouteNames.splash,
-        builder: (_, __) => const SplashScreen(),
+        builder: (_, _) => const SplashScreen(),
       ),
       GoRoute(
         path: RouteNames.onboarding,
-        builder: (_, __) => const OnboardingScreen(),
+        builder: (_, _) => const OnboardingScreen(),
       ),
       GoRoute(
         path: RouteNames.login,
-        builder: (_, __) => const LoginScreen(),
+        builder: (_, _) => const LoginScreen(),
       ),
       GoRoute(
         path: RouteNames.register,
-        builder: (_, __) => const RegisterScreen(),
+        builder: (_, _) => const RegisterScreen(),
       ),
       GoRoute(
         path: RouteNames.forgotPassword,
-        builder: (_, __) => const ForgotPasswordScreen(),
+        builder: (_, _) => const ForgotPasswordScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => StudentShell(
@@ -137,7 +137,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.studentHome,
-                builder: (_, __) => const StudentHomeScreen(),
+                builder: (_, _) => const StudentHomeScreen(),
               ),
             ],
           ),
@@ -145,7 +145,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.studentDirectory,
-                builder: (_, __) =>
+                builder: (_, _) =>
                     const FacultyDirectoryScreen(),
               ),
             ],
@@ -154,7 +154,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.studentBookings,
-                builder: (_, __) => const MyBookingsScreen(),
+                builder: (_, _) => const MyBookingsScreen(),
               ),
             ],
           ),
@@ -162,7 +162,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.studentNotifications,
-                builder: (_, __) => const NotificationsScreen(),
+                builder: (_, _) => const NotificationsScreen(),
               ),
             ],
           ),
@@ -204,7 +204,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.facultyHome,
-                builder: (_, __) => const FacultyHomeScreen(),
+                builder: (_, _) => const FacultyHomeScreen(),
               ),
             ],
           ),
@@ -212,7 +212,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.facultyInbox,
-                builder: (_, __) => const RequestsInboxScreen(),
+                builder: (_, _) => const RequestsInboxScreen(),
               ),
             ],
           ),
@@ -220,7 +220,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.facultyAvailability,
-                builder: (_, __) =>
+                builder: (_, _) =>
                     const ManageAvailabilityScreen(),
               ),
             ],
@@ -229,7 +229,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.facultyCalendar,
-                builder: (_, __) => const FacultyCalendarScreen(),
+                builder: (_, _) => const FacultyCalendarScreen(),
               ),
             ],
           ),
@@ -237,7 +237,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: RouteNames.facultyNotifications,
-                builder: (_, __) => const NotificationsScreen(),
+                builder: (_, _) => const NotificationsScreen(),
               ),
             ],
           ),
@@ -245,7 +245,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RouteNames.facultySettings,
-        builder: (_, __) => const FacultySettingsScreen(),
+        builder: (_, _) => const FacultySettingsScreen(),
       ),
       GoRoute(
         path: '/faculty/request/:id',
@@ -254,15 +254,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RouteNames.notifications,
-        builder: (_, __) => const NotificationsScreen(),
+        builder: (_, _) => const NotificationsScreen(),
       ),
       GoRoute(
         path: RouteNames.adminHome,
-        builder: (_, __) => const AdminHomeScreen(),
+        builder: (_, _) => const AdminHomeScreen(),
       ),
       GoRoute(
         path: RouteNames.profile,
-        builder: (_, __) => const ProfileScreen(),
+        builder: (_, _) => const ProfileScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
@@ -277,7 +277,7 @@ class _RefRefreshListenable extends ChangeNotifier {
     // ref.listen inside a Provider keeps the subscription alive
     // for the lifetime of the provider — the standard Riverpod pattern
     // for GoRouter refreshListenable.
-    ref.listen(authStateProvider, (_, __) => notifyListeners());
-    ref.listen(onboardingSeenProvider, (_, __) => notifyListeners());
+    ref.listen(authStateProvider, (_, _) => notifyListeners());
+    ref.listen(onboardingSeenProvider, (_, _) => notifyListeners());
   }
 }

@@ -186,7 +186,7 @@ class _WeeklySummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return rules.when(
       loading: () => const SizedBox.shrink(),
-      error: (_, __) => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
       data: (all) {
         final weekly =
             all.where((r) => !r.isOneOff && r.isActive).toList();

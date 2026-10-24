@@ -193,7 +193,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                 const InputDecoration(labelText: 'Year'),
                             items: AppConstants.years
                                 .map((y) => DropdownMenuItem(
-                                    value: y, child: Text('${y} year')))
+                                    value: y, child: Text('$y year')))
                                 .toList(),
                             onChanged: (v) => setState(() => _year = v),
                           ),
@@ -257,7 +257,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       ),
     );
   }
-}
 }
 
 /// Department picker fed by the admin-managed `departments` collection,

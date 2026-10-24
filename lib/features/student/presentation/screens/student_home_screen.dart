@@ -49,7 +49,7 @@ class StudentHomeScreen extends ConsumerWidget {
               loading: () => const ListTile(
                   title: Text('Welcome'),
                   subtitle: Text('Loading profile…')),
-              error: (_, __) =>
+              error: (_, _) =>
                   const ListTile(title: Text('Welcome back')),
               data: (user) => ListTile(
                 leading: CircleAvatar(

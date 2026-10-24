@@ -161,12 +161,10 @@ class SeedService {
         'endTime': end,
         'purpose': purpose,
         'status': status,
-        if (rejectionReason != null)
-          'rejectionReason': rejectionReason,
-        if (proposedDate != null) 'proposedDate': proposedDate,
-        if (proposedStart != null)
-          'proposedStartTime': proposedStart,
-        if (proposedEnd != null) 'proposedEndTime': proposedEnd,
+        'rejectionReason': ?rejectionReason,
+        'proposedDate': ?proposedDate,
+        'proposedStartTime': ?proposedStart,
+        'proposedEndTime': ?proposedEnd,
         'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
       });
